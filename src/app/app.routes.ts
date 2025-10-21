@@ -4,6 +4,8 @@ import { SupplierComponent } from './pages/supplier-component/supplier-component
 import { ProjectComponent } from './pages/project-component/project-component';
 import { CustomerEditComponent } from './pages/customer-component/customer-edit-component/customer-edit-component';
 
+import { MaterialComponent } from './pages/material-component/material-component';
+
 export const routes: Routes = [
     {
         path: 'pages/customer', component: CustomerComponent,
@@ -13,5 +15,7 @@ export const routes: Routes = [
         ]
     },
     { path: 'pages/supplier', component: SupplierComponent },
-    { path: 'pages/project', component: ProjectComponent }
+    { path: 'pages/project', component: ProjectComponent },
+   
+    { path: 'pages/material', component: MaterialComponent},
 ];

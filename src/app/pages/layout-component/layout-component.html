@@ -57,6 +57,13 @@
                 <mat-icon>healing</mat-icon>
                 <span>Supplier</span>
             </button>
+
+            <button class="myButton" mat-menu-item (click)="sidenav.toggle()"
+                routerLink="/pages/material" style="cursor: pointer">
+                <mat-icon>healing</mat-icon>
+                <span>Material</span>
+            </button>
+
             <mat-divider></mat-divider>
             <button class="myButton"  mat-menu-item (click)="sidenav.toggle()"
                 routerLink="/pages/project" style="cursor: pointer">
