@@ -1,0 +1,45 @@
+<form class="example-container" [formGroup]="form" (submit)="operate()">
+  <div [hidden]="true">
+    <mat-form-field>
+      <input matInput placeholder="ID" formControlName="idMaterial" />
+    </mat-form-field>
+  </div>
+
+  <mat-form-field>
+    <input matInput placeholder="Nombre del material" formControlName="name" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Unidad de medida" formControlName="measurementUnit" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput type="number" placeholder="Precio unitario" formControlName="unitPrice" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput type="number" placeholder="Stock actual" formControlName="actualStock" />
+  </mat-form-field>
+
+  <!-- Lista desplegable de proveedores -->
+  <mat-form-field>
+    <mat-label>Proveedor</mat-label>
+    <mat-select formControlName="supplier">
+      <mat-option *ngFor="let s of suppliers" [value]="s.idSupplier">
+        {{ s.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div>
+    <button mat-button type="submit">
+      <mat-icon>done</mat-icon>
+      <span>Guardar</span>
+    </button>
+
+    <button mat-button type="button" routerLink="/pages/material">
+      <mat-icon>cancel</mat-icon>
+      <span>Cancelar</span>
+    </button>
+  </div>
+</form>

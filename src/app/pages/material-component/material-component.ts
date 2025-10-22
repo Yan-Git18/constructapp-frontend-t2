@@ -4,13 +4,11 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Material } from '../../model/material';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-
+import { MaterialService } from '../../services/material-service';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { switchMap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { MaterialService } from '../../services/material-service';
-
 
 @Component({
   selector: 'app-material-component',
@@ -37,7 +35,6 @@ export class MaterialComponent {
   constructor(
     private materialService: MaterialService,
     private _snackBar: MatSnackBar,
-   
   ) {}
 
   ngOnInit(): void {
@@ -66,8 +63,7 @@ export class MaterialComponent {
     this.dataSource.filter = e.target.value.trim();
   }
 
-
-delete(id: number){
+  delete(id: number){
     this.materialService.delete(id)
     .pipe(switchMap(()=>this.materialService.findAll()))
     .subscribe( data => {

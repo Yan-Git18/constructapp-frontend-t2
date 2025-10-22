@@ -3,8 +3,8 @@ import { CustomerComponent } from './pages/customer-component/customer-component
 import { SupplierComponent } from './pages/supplier-component/supplier-component';
 import { ProjectComponent } from './pages/project-component/project-component';
 import { CustomerEditComponent } from './pages/customer-component/customer-edit-component/customer-edit-component';
-
 import { MaterialComponent } from './pages/material-component/material-component';
+import { MaterialEditComponent } from './pages/material-component/material-edit-component/material-edit-component';
 
 export const routes: Routes = [
     {
@@ -16,6 +16,11 @@ export const routes: Routes = [
     },
     { path: 'pages/supplier', component: SupplierComponent },
     { path: 'pages/project', component: ProjectComponent },
-   
-    { path: 'pages/material', component: MaterialComponent},
+    {
+        path: 'pages/material', component: MaterialComponent,
+        children: [
+            { path: 'new', component: MaterialEditComponent },
+            { path: 'edit/:id', component: MaterialEditComponent }
+        ]
+    }
 ];
