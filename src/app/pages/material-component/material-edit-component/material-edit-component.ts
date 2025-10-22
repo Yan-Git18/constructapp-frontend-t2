@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MaterialModule } from '../../../material/material-module';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MaterialService } from '../../../services/material-service';
 import { SupplierService } from '../../../services/supplier-service';
@@ -11,15 +11,16 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-material-edit',
+  standalone: true,
   imports: [CommonModule, MaterialModule, ReactiveFormsModule, RouterLink],
   templateUrl: './material-edit-component.html',
-  styleUrl: './material-edit-component.css'
+  styleUrls: ['./material-edit-component.css']
 })
 export class MaterialEditComponent {
   form: FormGroup;
   id: number;
   isEdit: boolean;
-  suppliers: Supplier[] = []; 
+  suppliers: Supplier[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -31,11 +32,11 @@ export class MaterialEditComponent {
   ngOnInit(): void {
     this.form = new FormGroup({
       idMaterial: new FormControl(),
-      name: new FormControl(''),
-      measurementUnit: new FormControl(''),
-      unitPrice: new FormControl(0),
-      actualStock: new FormControl(0),
-      supplier: new FormControl()
+      name: new FormControl('', [Validators.required, Validators.minLength(3)]),
+      measurementUnit: new FormControl('', [Validators.required]),
+      unitPrice: new FormControl('', [Validators.required, Validators.min(0.01)]),
+      actualStock: new FormControl('', [Validators.required, Validators.min(0)]),
+      supplier: new FormControl('', [Validators.required])
     });
 
     this.supplierService.findAll().subscribe((data) => {
@@ -52,19 +53,24 @@ export class MaterialEditComponent {
   initForm() {
     if (this.isEdit) {
       this.materialService.findById(this.id).subscribe((data) => {
-        this.form = new FormGroup({
-          idMaterial: new FormControl(data.idMaterial),
-          name: new FormControl(data.name),
-          measurementUnit: new FormControl(data.measurementUnit),
-          unitPrice: new FormControl(data.unitPrice),
-          actualStock: new FormControl(data.actualStock),
-          supplier: new FormControl(data.supplier?.idSupplier) 
+        this.form.patchValue({
+          idMaterial: data.idMaterial,
+          name: data.name,
+          measurementUnit: data.measurementUnit,
+          unitPrice: data.unitPrice,
+          actualStock: data.actualStock,
+          supplier: data.supplier?.idSupplier
         });
       });
     }
   }
 
   operate() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched(); 
+      return;
+    }
+
     const material: Material = new Material();
     material.idMaterial = this.form.value['idMaterial'];
     material.name = this.form.value['name'];
@@ -82,6 +88,7 @@ export class MaterialEditComponent {
           this.materialService.setMaterialChange(data);
           this.materialService.setMessageChange('MATERIAL UPDATED!');
         });
+        this.router.navigate(['pages/material']);
       });
     } else {
       this.materialService
@@ -91,8 +98,7 @@ export class MaterialEditComponent {
           this.materialService.setMaterialChange(data);
           this.materialService.setMessageChange('MATERIAL CREATED!');
         });
+      this.router.navigate(['pages/material']);
     }
-
-    this.router.navigate(['pages/material']);
   }
 }
