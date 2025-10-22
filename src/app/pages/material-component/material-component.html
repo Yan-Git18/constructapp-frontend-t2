@@ -44,16 +44,16 @@
     </ng-container>
 
     <!-- Actions Column -->
-    <ng-container matColumnDef="actions">
+     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>ACTIONS</th>
       <td mat-cell *matCellDef="let row">
         <button mat-button [routerLink]="['edit', row.idMaterial]">
           <mat-icon>mode_edit</mat-icon>
           Edit
         </button>
-        <button mat-button (click) = "delete(row.idMaterial)" >
-          <mat-icon>delete</mat-icon>
-          Delete
+        <button mat-button (click)="delete(row.idMaterial, row.name)">
+            <mat-icon>delete</mat-icon>
+            Delete
         </button>
 
       </td>

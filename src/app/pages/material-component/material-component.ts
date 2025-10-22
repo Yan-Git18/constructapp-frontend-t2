@@ -9,6 +9,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { switchMap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-material-component',
@@ -35,6 +36,7 @@ export class MaterialComponent {
   constructor(
     private materialService: MaterialService,
     private _snackBar: MatSnackBar,
+    private dialog:MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -63,12 +65,21 @@ export class MaterialComponent {
     this.dataSource.filter = e.target.value.trim();
   }
 
-  delete(id: number){
-    this.materialService.delete(id)
-    .pipe(switchMap(()=>this.materialService.findAll()))
-    .subscribe( data => {
-      this.materialService.setMaterialChange(data);
-      this.materialService.setMessageChange('MATERIAL DELETED!');
+  delete(id: number, name?: string) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: { name }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.materialService.delete(id)
+          .pipe(switchMap(() => this.materialService.findAll()))
+          .subscribe(data => {
+            this.materialService.setMaterialChange(data);
+            this.materialService.setMessageChange('MATERIAL ELIMINADO!');
+          });
+      }
     });
   }
 }
